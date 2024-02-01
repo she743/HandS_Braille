@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 import sys
 
-src = cv2.imread('KakaoTalk_Photo_2024-01-31-15-26-36 005.jpeg', cv2.IMREAD_COLOR)
+src = cv2.imread('./example_image_flash/KakaoTalk_Photo_2024-01-31-23-34-34.jpeg', cv2.IMREAD_COLOR)
 src_gray = cv2.cvtColor(src, cv2.COLOR_BGR2GRAY)
 
 if src is None:
@@ -12,11 +12,15 @@ if src is None:
 img_hls = cv2.cvtColor(src, cv2.COLOR_BGR2HLS)
 img_hlsgray = cv2.cvtColor(img_hls, cv2.COLOR_BGR2GRAY)
 
-# cv2.imshow('hlsgray', img_hlsgray)
+img_median = cv2.medianBlur(img_hlsgray, 15)
+cv2.imshow('first_med', img_median)
 
-img_grayscale_gaussian1 = cv2.GaussianBlur(img_hlsgray, (3, 3), 0)
+img_grayscale_gaussian1 = cv2.GaussianBlur(img_median, (5, 5), 0)
+cv2.imshow('first_gaussian', img_grayscale_gaussian1)
+
 # img_grayscale_gaussian2 = cv2.GaussianBlur(img_grayscale, (1, 1), 0)
-img_grayscale = cv2.adaptiveThreshold(img_grayscale_gaussian1, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY_INV, 37, 0)
+img_grayscale = cv2.adaptiveThreshold(img_grayscale_gaussian1, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 37, 0)
+cv2.imshow('first_threshold', img_grayscale)
 
 kernel = np.array([[1, 1, 1],
                     [1, 1, 1],
@@ -58,7 +62,7 @@ circles = cv2.HoughCircles(img_median, cv2.HOUGH_GRADIENT, 1, 30, param1=250, pa
 circles = np.uint16(np.around(circles))
 
 for i in circles[0,:]:
-    cv2.circle(img_median,(int(i[0]),int(i[1])), 18, (0,255,255), 5)
+    cv2.circle(img_median,(int(i[0]),int(i[1])), 18, (255,255,255), 5)
 
 # cv2.imshow('dst1', dst1)
 # cv2.imshow('dst2', dst2)
