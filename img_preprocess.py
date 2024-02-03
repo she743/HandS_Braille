@@ -1,31 +1,31 @@
 import cv2
 import numpy as np
 
-src = cv2.imread('/home/braille/Desktop/HandS_Braille/Video_screenshot_02.02.202410.png', cv2.IMREAD_COLOR)
+src = cv2.imread('/home/rasp/Desktop/HandS_Braille/captured_img/test_cap_img0.jpg', cv2.IMREAD_COLOR)
 src_gray = cv2.cvtColor(src, cv2.COLOR_BGR2GRAY)
 
-img_hls = cv2.cvtColor(src, cv2.COLOR_BGR2HLS)
-img_hlsgray = cv2.cvtColor(img_hls, cv2.COLOR_BGR2GRAY)
-cv2.imshow('gray', img_hlsgray)
+# img_hls = cv2.cvtColor(src, cv2.COLOR_BGR2HLS)
+# img_hlsgray = cv2.cvtColor(img_hls, cv2.COLOR_BGR2GRAY)
+# cv2.imshow('gray', img_hlsgray)
 
-img_hsv = cv2.cvtColor(src, cv2.COLOR_BGR2HLS)
-img_hsvgray= cv2.cvtColor(src, cv2.COLOR_BGR2HLS)
-cv2.imshow('hsvgray', img_hlsgray)
+# img_hsv = cv2.cvtColor(src, cv2.COLOR_BGR2HLS)
+# img_hsvgray= cv2.cvtColor(src, cv2.COLOR_BGR2HLS)
+# cv2.imshow('hsvgray', img_hlsgray)
 
-img_YCrCb = cv2.cvtColor(src, cv2.COLOR_BGR2HLS)
-img_YCrCbgray = cv2.cvtColor(src, cv2.COLOR_BGR2HLS)
-cv2.imshow('YCrCbgray', img_hlsgray)
+# img_YCrCb = cv2.cvtColor(src, cv2.COLOR_BGR2HLS)
+# img_YCrCbgray = cv2.cvtColor(src, cv2.COLOR_BGR2HLS)
+# cv2.imshow('YCrCbgray', img_hlsgray)
 
 # img_median = cv2.medianBlur(img_hlsgray, 15)
 # cv2.imshow('first_med', img_median)
 
-# img_bilateral = cv2.bilateralFilter(img_median, 9, 75, 75)
+# img_bilateral = cv2.bilateralFilter(src_gray, 9, 75, 75)
 # cv2.imshow('bilateral', img_bilateral)
 
 # img_gaussian1 = cv2.GaussianBlur(img_bilateral, (15, 15), 0)
 # cv2.imshow('gaussian1', img_gaussian1)
 
-img_adaptive = cv2.adaptiveThreshold(img_hlsgray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV, 41, 0.1)
+img_adaptive = cv2.adaptiveThreshold(src_gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 41, 0.1)
 cv2.imshow('adpthreshold', img_adaptive)
 
 # img_median2 = cv2.medianBlur(img_adaptive, 5)
