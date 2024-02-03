@@ -2,7 +2,7 @@ import RPi.GPIO as GPIO
 import time
 
 # Define GPIO pins for switch and LED
-switch_pin = 17  # Adjust the pin number as per your connection
+switch_pin = 22  # Adjust the pin number as per your connection
 led_pin = 23     # Adjust the pin number as per your connection
 
 # Set up GPIO mode and initial state
