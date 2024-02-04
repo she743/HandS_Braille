@@ -205,9 +205,12 @@ def transasc(inplist):
         else :
             num1=inplist[0][0]
             i=1
-        while(inplist[i][1]!=0) : #모음 개수 count
-            count=count + 1
-            i=i+1
+        while(i<len(inplist)) : #모음 개수 count
+            if inplist[i][1] != 0:
+                count=count + 1
+                i=i+1
+            else:
+                break
         if(count==0) :
             num2=1
         elif(count==1) :
@@ -251,7 +254,7 @@ nmode=0
 letter = []
 divide = []
 # for문 나중에는 while로 변경. 들어온 input이 없을때까지 반복하기 voule받는거 앞으로 빼는 것도
-for i in range(3):
+for i in range(5):
 # 첫번째 2차원배열에 만들기
     value=input()
     if value=="001001":
