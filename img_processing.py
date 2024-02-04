@@ -1,33 +1,25 @@
 import cv2
 import numpy as np
-import sys
 
-src = cv2.imread('/home/rasp/Desktop/HandS_Braille/captured_img/test_cap_img0.jpg', cv2.IMREAD_COLOR)
+src = cv2.imread('/home/rasp/Desktop/HandS_Braille/captured_img/test_cap_img2.jpg', cv2.IMREAD_COLOR)
 src_gray = cv2.cvtColor(src, cv2.COLOR_BGR2GRAY)
 
-if src is None:
-    print('Image load failed!')
-    sys.exit()
+img_gaussian1 = cv2.GaussianBlur(src_gray, (3, 3), 0)
+cv2.imshow('gaussian', img_gaussian1)
 
-img_hls = cv2.cvtColor(src, cv2.COLOR_BGR2HLS)
-img_hlsgray = cv2.cvtColor(img_hls, cv2.COLOR_BGR2GRAY)
-
-# cv2.imshow('hlsgray', img_hlsgray)
-
-img_grayscale_gaussian1 = cv2.GaussianBlur(img_hlsgray, (3, 3), 0)
 # img_grayscale_gaussian2 = cv2.GaussianBlur(img_grayscale, (1, 1), 0)
-img_grayscale = cv2.adaptiveThreshold(img_grayscale_gaussian1, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY_INV, 37, 0)
+img_grayscale = cv2.adaptiveThreshold(img_gaussian1, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY_INV, 37, 0)
+cv2.imshow('adaptiveThreshold', img_grayscale)
 
 kernel = np.array([[1, 1, 1],
                     [1, 1, 1],
                     [1, 1, 1]])*(1/3)
 
 image_blur = cv2.filter2D(img_grayscale, -1, kernel)
-# cv2.imshow('sharp', image_blur)
+cv2.imshow('sharp', image_blur)
 
 img_median = cv2.medianBlur(image_blur, 5)
-
-# src 영상에 지역 이진화 수행
+cv2.imshow('med', img_median)
 dst1 = np.zeros(img_median.shape, np.uint8)
 
 bw = img_median.shape[1] // 4
@@ -67,5 +59,5 @@ for i in circles[0,:]:
 # cv2.imshow('adaptivegray2', img_grayscale)
 cv2.imshow('median', img_median)
 
-cv2.waitKey() #아무키나 누르면 지나감 안에 값이 1이면 그냥 지나가지만 키를 눌렀을때 반응함
+cv2.waitKey()
 cv2.destroyAllWindows()

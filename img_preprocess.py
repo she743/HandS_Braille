@@ -1,51 +1,48 @@
 import cv2
 import numpy as np
 
-src = cv2.imread('/home/rasp/Desktop/HandS_Braille/captured_img/test_cap_img0.jpg', cv2.IMREAD_COLOR)
+src = cv2.imread('/home/rasp/Desktop/HandS_Braille/captured_img/test_cap_img2.jpg', cv2.IMREAD_COLOR)
 src_gray = cv2.cvtColor(src, cv2.COLOR_BGR2GRAY)
 
-# img_hls = cv2.cvtColor(src, cv2.COLOR_BGR2HLS)
-# img_hlsgray = cv2.cvtColor(img_hls, cv2.COLOR_BGR2GRAY)
-# cv2.imshow('gray', img_hlsgray)
+x, y, width, height = 83, 153, 472, 150
 
-# img_hsv = cv2.cvtColor(src, cv2.COLOR_BGR2HLS)
-# img_hsvgray= cv2.cvtColor(src, cv2.COLOR_BGR2HLS)
-# cv2.imshow('hsvgray', img_hlsgray)
+cropped_image = src_gray[y: y+height, x:x+width]
+cv2.imshow('cropped', cropped_image)
 
-# img_YCrCb = cv2.cvtColor(src, cv2.COLOR_BGR2HLS)
-# img_YCrCbgray = cv2.cvtColor(src, cv2.COLOR_BGR2HLS)
-# cv2.imshow('YCrCbgray', img_hlsgray)
+equalized = cv2.equalizeHist(cropped_image)
+cv2.imshow('equalize', equalized)
 
-# img_median = cv2.medianBlur(img_hlsgray, 15)
-# cv2.imshow('first_med', img_median)
+# kernel = np.array([[-1, -1, -1], [-1, 9, -1], [-1, -1, -1]])
 
-# img_bilateral = cv2.bilateralFilter(src_gray, 9, 75, 75)
-# cv2.imshow('bilateral', img_bilateral)
+# sharpened_img = cv2.filter2D(equalized, -1, kernel)
+# cv2.imshow('sharp', sharpened_img)
 
-# img_gaussian1 = cv2.GaussianBlur(img_bilateral, (15, 15), 0)
-# cv2.imshow('gaussian1', img_gaussian1)
+img_median = cv2.medianBlur(equalized, 5)
+cv2.imshow('first_med', img_median)
 
-img_adaptive = cv2.adaptiveThreshold(src_gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 41, 0.1)
-cv2.imshow('adpthreshold', img_adaptive)
+img_bilateral = cv2.bilateralFilter(img_median, 9, 15, 15)
+cv2.imshow('bilateral', img_bilateral)
 
-# img_median2 = cv2.medianBlur(img_adaptive, 5)
-# cv2.imshow('second_median', img_median2)
+img_gaussian1 = cv2.GaussianBlur(img_bilateral, (5, 5), 1)
+cv2.imshow('gaussian1', img_gaussian1)
 
-img_bilateral2 = cv2.bilateralFilter(img_adaptive, 35, 125, 125)
-cv2.imshow('second_bilateral', img_bilateral2)
+img_src_adapt = cv2.adaptiveThreshold(img_gaussian1, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV, 5, 0.1)
+cv2.imshow('binary_adapt', img_src_adapt)
 
-# img_gaussian2 = cv2.GaussianBlur(img_bilateral2, (9, 9), 2)
-# cv2.imshow('gaussian2', img_gaussian2)
+img_median2 = cv2.medianBlur(img_src_adapt, 5)
+cv2.imshow('second_median', img_median2)
 
-
-circles = cv2.HoughCircles(img_bilateral2, cv2.HOUGH_GRADIENT, 1, 20, param1=250, param2=15, minRadius=0, maxRadius=15)
+circles = cv2.HoughCircles(img_median2, cv2.HOUGH_GRADIENT, 1, 17, param1=250, param2=10, minRadius=5, maxRadius=60)
 
 circles = np.uint16(np.around(circles))
 
 for i in circles[0,:]:
-    cv2.circle(src, (int(i[0]),int(i[1])), int(i[2]+2), (0,0,255), 5)
+    cv2.circle(cropped_image, (int(i[0]),int(i[1])), 2, (0,0,255), 5)
 
-cv2.imshow('circles',src)
+cv2.circle(src, (83, 153), 2, (255,0,255), 5)
+cv2.circle(src, (555, 303), 2, (255,0,255), 5)
+
+cv2.imshow('circles', cropped_image)
 
 cv2.waitKey()
 cv2.destroyAllWindows()

@@ -58,7 +58,7 @@ while True:
 
 
     # Display the frame
-    # cv2.imshow('Video', frame)
+   #  cv2.imshow('Video', frame)
 
     # Break the loop if 'q' key is pressed
     if cv2.waitKey(1) & 0xFF == ord('q'):
