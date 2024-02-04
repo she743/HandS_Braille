@@ -80,7 +80,8 @@ dicnum = {
 "110100" : 6, #숫자 6
 "110110" : 7, #숫자 7
 "110010" : 8, #숫자 8
-"010100" : 9  #숫자 9
+"010100" : 9,  #숫자 9
+"001001" : 11 # -
 }
 
 # 띄어쓰기 000000
@@ -195,7 +196,10 @@ def transasc(inplist):
     count=0
     count1=0
     if(inplist[0][3]!=0) : #숫자인지 확인
-        return str(inplist[0][3]%10)
+        if inplist[0][3]==11:
+            return "-" #추가한것 확인필요 - 땜에 추가
+        else:
+            return str(inplist[0][3]%10)
     else : #글자모드
         if(inplist[0][0]==0) : #초성이 없으면
             num1=12
@@ -254,11 +258,14 @@ nmode=0
 letter = []
 divide = []
 # for문 나중에는 while로 변경. 들어온 input이 없을때까지 반복하기 voule받는거 앞으로 빼는 것도
-for i in range(5):
+for i in range(4):
 # 첫번째 2차원배열에 만들기
     value=input()
     if value=="001001":
-         letter.append([0,0,0,0])
+         if nmode ==1:
+             letter.append([0,0,0,11]) #-땜에 추가
+         else:
+            letter.append([0,0,0,0])
          #숫자모드에서 001001은 '-' 그래서 이거에 관한 처리하려면 이 경우엔 숫자칸에 -에 해당하는거 만들어서 넣어줘야함
     else:
         if value=="000000":
