@@ -40,10 +40,10 @@ while True:
         # print("Switch pressed - LED ON")
         # GPIO.output(led_pin, GPIO.HIGH)
 
-        if len(frame.shape) == 3 and frame.shape[2] == 3:
-            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        # if len(frame.shape) == 3 and frame.shape[2] == 3:
+        #    frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-        cv2.imwrite(f"/home/rasp/Desktop/HandS_Braille/captured_img/test_cap_img{num}.jpg", frame)
+        cv2.imwrite(f"/home/rasp/Desktop/HandS_Braille/vid_process_src/captured_img2/test_cap_img{num}.jpg", frame)
         print("image captured")
 
         # time.sleep(5)
@@ -58,7 +58,7 @@ while True:
 
 
     # Display the frame
-   #  cv2.imshow('Video', frame)
+    # cv2.imshow('Video', frame)
 
     # Break the loop if 'q' key is pressed
     if cv2.waitKey(1) & 0xFF == ord('q'):
