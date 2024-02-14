@@ -13,7 +13,7 @@ def auto_canny(image, sigma=0.33):
 	# return the edged image
     return edged
 
-src = cv2.imread('/Users/tsshin/Desktop/HandS_Braille/vid_process_src/captured_img2/test_cap_img15.jpg', cv2.IMREAD_COLOR)
+src = cv2.imread('C:/Users/tony8/HandS_Braille/vid_process_src/captured_img2/test_cap_img18.jpg', cv2.IMREAD_COLOR)
 src_gray = cv2.cvtColor(src, cv2.COLOR_BGR2GRAY)
 
 x, y, width, height = 85, 143, 458, 140
@@ -62,10 +62,50 @@ circles = cv2.HoughCircles(morph2, cv2.HOUGH_GRADIENT, 1, 12, param1=250, param2
 
 circles = np.uint16(np.around(circles))
 
-for i in circles[0,:]:
-    cv2.circle(cropped_image,(int(i[0]),int(i[1])), int(i[2])+1, (0,255,255), 1)
+# for i in circles[0,:]:
+#     cv2.circle(cropped_image,(int(i[0]),int(i[1])), int(i[2])+1, (0,255,255), 1)
 
-cv2.imshow('circle', cropped_image)
+# cv2.imshow('circle', cropped_image)
+
+# 이미지 읽어서 그레이스케일 변환, 바이너리 스케일 변환
+img = morph2
+ret, th = cv2.threshold(img, 127,255,cv2.THRESH_BINARY_INV)
+
+# 컨튜어 찾기
+contours, hr = cv2.findContours(th, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+contr = contours[0]
+
+# 감싸는 사각형 표시(검정색)
+x1,y1,w,h = cv2.boundingRect(contr)
+cv2.rectangle(cropped_image, (x1,y1), (x1+w, y1+h), (0,0,0), 3)
+
+# 최소한의 사각형 표시(초록색)
+rect = cv2.minAreaRect(contr)
+box = cv2.boxPoints(rect)   # 중심점과 각도를 4개의 꼭지점 좌표로 변환
+box = np.int0(box)          # 정수로 변환
+cv2.drawContours(cropped_image, [box], -1, (0,255,0), 3)
+
+# 최소한의 원 표시(파랑색)
+(x1,y1), radius = cv2.minEnclosingCircle(contr)
+cv2.circle(cropped_image, (int(x1), int(y1)), int(radius), (255,0,0), 2)
+
+# 최소한의 삼각형 표시(분홍색)
+ret, tri = cv2.minEnclosingTriangle(contr)
+cv2.polylines(cropped_image, [np.int32(tri)], True, (255,0,255), 2)
+
+# 최소한의 타원 표시(노랑색)
+# ellipse = cv2.fitEllipse(contr)
+# cv2.ellipse(cropped_image, ellipse, (0,255,255), 3)
+
+# 중심점 통과하는 직선 표시(빨강색)
+# [vx,vy,x1,y1] = cv2.fitLine(contr, cv2.DIST_L2,0,0.01,0.01)
+# cols,rows = cropped_image.shape[:2]
+# cv2.line(cropped_image,(0, 0-x1*(vy/vx) + y), (cols-1, (cols-x1)*(vy/vx) + y1), (0,0,255),2)
+
+# 결과 출력
+cv2.imshow('contour', cropped_image)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
 
 cv2.waitKey()
 cv2.destroyAllWindows()
