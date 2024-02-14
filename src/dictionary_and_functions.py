@@ -111,7 +111,7 @@ def match(bit):
                 #여기도 없을 때 return 값?일단 7넣음
                     return 7
 
-#make a column for 2D array
+# make a column for 2D array
 def makecol(row, num):
     line =[]
     for j in range(4):
@@ -133,7 +133,7 @@ def checkf(list):
     else:            #빈칸인지 확인
         return 4
 
-#공백만들기
+# 공백만들기
 def makespace(biglist):
     outlist = []
     blank = [0,0,0,0]
@@ -172,25 +172,25 @@ def makespace(biglist):
         else :
             outlist.append(blank)
     outlist.append(biglist[0])
-    
+
     return outlist
 
-def mixend(key) : 
-    telecom = { 202 : 3 , 
-                220 : 4 , 
-                523 : 6 , 
-                528 : 7 , 
-                902 : 10 , 
-                917 : 11 , 
-                918 : 12 , 
-                920 : 13 , 
-                926 : 14 , 
-                927 : 15 , 
-                928 : 16 , 
+def mixend(key) :
+    telecom = { 202 : 3 ,
+                220 : 4 ,
+                523 : 6 ,
+                528 : 7 ,
+                902 : 10 ,
+                917 : 11 ,
+                918 : 12 ,
+                920 : 13 ,
+                926 : 14 ,
+                927 : 15 ,
+                928 : 16 ,
                 1820 : 19 }.get(key)
     return telecom
 
-#한글자로 만들기
+# 한글자로 만들기
 def transasc(inplist):
     i=0
     count=0
@@ -224,7 +224,7 @@ def transasc(inplist):
             if(inplist[i-1][1]==2) : #두번째 모음이 ㅐ인 경우
                 if(inplist[i-2][1]==14) : #우인 경우만 +3
                     num2=inplist[i-2][1]+3
-                else : 
+                else :
                     num2=inplist[i-2][1]+1
             elif(inplist[i-1][1]==8) : #두번째 모음이 ㅖ인 경우
                 num2=inplist[i-2][1]
@@ -243,7 +243,7 @@ def transasc(inplist):
             count1=count1+1
             i=i+1
         if(count1==0) :
-            if num3!=21 : 
+            if num3!=21 :
                 num3=1
         elif(count1==1) :
             num3=inplist[i-1][2]
@@ -252,7 +252,6 @@ def transasc(inplist):
         else :
             print("오류")
         return chr(((num1-1)*21+num2-1)*28+num3-1+0xAC00)
-    
+
 def numget(value):
     return dicnum.get(value)
-    

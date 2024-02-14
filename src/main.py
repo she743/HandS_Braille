@@ -1,7 +1,10 @@
 import cv2
 import time
 import RPi.GPIO as GPIO
-from final_braille_recognition_contour_center import *
+import os, time
+from braille_contour_center import *
+from output_6bit import *
+from translate_braille2string import *
 
 # Define the GPIO pin for the LED
 led_pin = 23  # Change this to the actual GPIO pin you are using
@@ -38,11 +41,16 @@ while True:
 
     # Check if the switch is pressed
     if GPIO.input(switch_pin) == GPIO.LOW:
-        cv2.imwrite(f"/home/rasp/Desktop/HandS_Braille/vid_process_src/captured_img3/test_cap_img{num}.jpg", frame)
+        cv2.imwrite(f"/home/rasp/Desktop/HandS_Braille/src/img_capture/cap_img{num}.jpg", frame)
         print("image captured")
 
-        cropped, binary = final_braille_recognition_contour_center.preprocess_img(f'/home/rasp/Desktop/HandS_Braille/vid_process_src/captured_img3/test_cap_img{num}.jpg')
-        contour = final_braille_recognition_contour_center.find_contour_center(binary)
+        cropped, binary = preprocess_img(f'/home/rasp/Desktop/HandS_Braille/src/img_capture/cap_img{num}.jpg')
+        contour = find_contour_center(binary)
+
+        six_bit = dot2braille(contour)
+        string = translate(six_bit)
+        print(string)
+        os.system(f"espeak -v ko '{string}'")
 
         num += 1
 
