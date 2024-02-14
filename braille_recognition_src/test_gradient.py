@@ -2,6 +2,7 @@ import numpy as np
 from dicfunction import *
 from find import *
 
+#예시 dot data
 dot = [ [456, 52],
         [438, 51],
         [362, 49],
@@ -140,9 +141,7 @@ def dot2braille(dot):
             bit_array.append(temp_bit[0])
             break
         elif temp_bit[1] == 2:
-            bit_array.append(zero)
-            bit_array.append(temp_bit[0])
-            bit_array.append(zero)
+            bit_array.extend([zero,temp_bit[0],zero])
             break
         elif temp_bit[1] == 3:
             for i in range(len(bit_diff)):
@@ -151,9 +150,7 @@ def dot2braille(dot):
                     j=1
                     break
                 elif bit_diff[i][1] == 2:
-                    bit_array.append(zero)
-                    bit_array.append(temp_bit[0])
-                    bit_array.append(zero)
+                    bit_array.extend([zero,temp_bit[0],zero])
                     j=1
                     break
                 elif bit_diff[i][1] == 4:
