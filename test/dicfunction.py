@@ -195,6 +195,7 @@ def transasc(inplist):
     i=0
     count=0
     count1=0
+    num3=0
     if(inplist[0][3]!=0) : #숫자인지 확인
         if inplist[0][3]==11:
             return "-" #추가한것 확인필요 - 땜에 추가
@@ -241,8 +242,9 @@ def transasc(inplist):
         while(i<len(inplist)) : #종성 개수 count
             count1=count1+1
             i=i+1
-        if(count1==0) : 
-            num3=1
+        if(count1==0) :
+            if num3!=21 : 
+                num3=1
         elif(count1==1) :
             num3=inplist[i-1][2]
         elif(count1==2) :

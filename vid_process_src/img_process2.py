@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 
-src = cv2.imread('/Users/tsshin/Desktop/HandS_Braille/vid_process_src/captured_img/test_cap_img2.jpg', cv2.IMREAD_COLOR)
+src = cv2.imread('C:/Users/tony8/HandS_Braille/vid_process_src/captured_img2/test_cap_img2.jpg', cv2.IMREAD_COLOR)
 src_gray = cv2.cvtColor(src, cv2.COLOR_BGR2GRAY)
 
 x, y, width, height = 83, 153, 472, 150
