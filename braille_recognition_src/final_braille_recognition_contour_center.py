@@ -1,52 +1,56 @@
 import cv2
 import numpy as np
 
-src = cv2.imread('/Users/tsshin/Desktop/HandS_Braille/vid_process_src/captured_img3/test_cap_img24.jpg', cv2.IMREAD_COLOR)
-src_gray = cv2.cvtColor(src, cv2.COLOR_BGR2GRAY)
+def preprocess_img(src_path):
 
-if src is None:
-    raise ValueError("Failed to load image from {}".format(src))
+    src = cv2.imread(src_path, cv2.IMREAD_COLOR)
+    src_gray = cv2.cvtColor(src, cv2.COLOR_BGR2GRAY)
 
-x, y, width, height = 120, 160, 460, 90
-cropped_gray_image = src_gray[y:y+height, x:x+width]
-cropped_image = src[y:y+height, x:x+width]
+    if src is None:
+        raise ValueError("Failed to load image from {}".format(src))
 
-background = cv2.medianBlur(cropped_gray_image, 27)
-foreground = cv2.absdiff(cropped_gray_image, background)
+    x, y, width, height = 120, 160, 460, 90
+    cropped_gray_image = src_gray[y:y+height, x:x+width]
+    cropped_image = src[y:y+height, x:x+width]
 
-img_crop_bilateral = cv2.bilateralFilter(foreground, 3, 15, 15)
-img_gaussian = cv2.GaussianBlur(img_crop_bilateral, (3, 3), 0)
+    background = cv2.medianBlur(cropped_gray_image, 27)
+    foreground = cv2.absdiff(cropped_gray_image, background)
 
-_, img_binary = cv2.threshold(img_gaussian, 0, 255, cv2.THRESH_OTSU)
+    img_crop_bilateral = cv2.bilateralFilter(foreground, 3, 15, 15)
+    img_gaussian = cv2.GaussianBlur(img_crop_bilateral, (3, 3), 0)
 
-window = cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(5,5))
-morph2 = cv2.morphologyEx(img_binary, cv2.MORPH_OPEN, window, iterations=1)
+    _, img_binary = cv2.threshold(img_gaussian, 0, 255, cv2.THRESH_OTSU)
 
-contours, hierarchy = cv2.findContours(morph2, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    window = cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(5,5))
+    morph2 = cv2.morphologyEx(img_binary, cv2.MORPH_OPEN, window, iterations=1)
 
-centroids = []
+    return cropped_image, morph2
 
-# 모든 컨투어에 대해 반복합니다.
-for contour in contours:
-    # 컨투어의 모멘트를 계산합니다.
-    M = cv2.moments(contour)
 
-    # 중심값을 계산합니다.
-    if M['m00'] == 0:
-        M['m00'] += 1
-        continue
+def find_contour_center(processed_img):
 
-    cx = int(M['m10'] / M['m00'])
-    cy = int(M['m01'] / M['m00'])
+    contours, hierarchy = cv2.findContours(processed_img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    centroids = []
 
-    # 중심값을 리스트에 추가합니다.
-    centroids.append((cx, cy))
-    print((cx,cy))
-    # 이미지에 중심을 그립니다.
-    cv2.circle(cropped_image, (cx, cy), 3, (0, 255, 0), -1)
-# print(centroids)
+    # Repeat for all detected contours
+    for contour in contours:
+        # Calculate moment of contour
+        M = cv2.moments(contour)
 
-cv2.imshow('center',cropped_image)
+        # Give value 1 in case denominator is zero - to avoid division by zero
+        if M['m00'] == 0:
+            M['m00'] += 1
+            continue
+
+        # Calculate centroids
+        cx = int(M['m10'] / M['m00'])
+        cy = int(M['m01'] / M['m00'])
+
+        # Add to list
+        centroids.append((cx, cy))
+        # print((cx,cy))
+
+    return centroids
 
 cv2.waitKey()
 cv2.destroyAllWindows()
