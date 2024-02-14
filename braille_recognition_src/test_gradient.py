@@ -1,6 +1,6 @@
 import numpy as np
 from dicfunction import *
-from find import *
+#from find import *
 
 #예시 dot data
 dot = [ [456, 52],
@@ -215,5 +215,5 @@ def dot2braille(dot):
     return sixbit
 
 
-braille=dot2braille(dot)
-print(translate(braille))
+#braille=dot2braille(dot)
+#print(translate(braille))
