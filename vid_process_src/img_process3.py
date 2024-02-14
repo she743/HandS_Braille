@@ -14,7 +14,7 @@ def auto_canny(image, sigma=0.33):
 	# return the edged image
     return edged
 
-src = cv2.imread('/home/rasp/Desktop/HandS_Braille/vid_process_src/captured_img2/test_cap_img1.jpg', cv2.IMREAD_COLOR)
+src = cv2.imread('/home/rasp/Desktop/HandS_Braille/vid_process_src/captured_img3/test_cap_img2.jpg', cv2.IMREAD_COLOR)
 
 x, y, width, height = 83, 153, 472, 150
 

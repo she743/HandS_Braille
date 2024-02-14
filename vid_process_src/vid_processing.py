@@ -43,7 +43,7 @@ while True:
         # if len(frame.shape) == 3 and frame.shape[2] == 3:
         #    frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-        cv2.imwrite(f"/home/rasp/Desktop/HandS_Braille/vid_process_src/captured_img2/test_cap_img{num}.jpg", frame)
+        cv2.imwrite(f"/home/rasp/Desktop/HandS_Braille/vid_process_src/captured_img3/test_cap_img{num}.jpg", frame)
         print("image captured")
 
         # time.sleep(5)
@@ -70,4 +70,5 @@ while True:
 # Release the VideoCapture and close the OpenCV window
 cap.release()
 GPIO.cleanup()
+
 cv2.destroyAllWindows()
