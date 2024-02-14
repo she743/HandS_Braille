@@ -7,7 +7,7 @@ letter = []
 divide = []
 
 # for문 나중에는 while로 변경. 들어온 input이 없을때까지 반복하기 voule받는거 앞으로 빼는 것도
-for i in range(3):
+for i in range(9):
 # 첫번째 2차원배열에 만들기
     value=input()
     if value=="001001":
