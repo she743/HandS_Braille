@@ -13,8 +13,18 @@ def auto_canny(image, sigma=0.33):
 	# return the edged image
     return edged
 
+<<<<<<< HEAD:vid_process_src/img_process3.py
 src = cv2.imread('C:/Users/tony8/HandS_Braille/vid_process_src/captured_img2/test_cap_img2.jpg', cv2.IMREAD_COLOR)
+=======
+<<<<<<< HEAD
+src = cv2.imread('/home/rasp/Desktop/HandS_Braille/vid_process_src/captured_img3/test_cap_img2.jpg', cv2.IMREAD_COLOR)
+
+x, y, width, height = 83, 153, 472, 150
+=======
+src = cv2.imread('C:/Users/tony8/HandS_Braille/vid_process_src/captured_img2/test_cap_img18.jpg', cv2.IMREAD_COLOR)
+>>>>>>> 8464c266b73d556b471d953e2d0353689d6d0d13:trial and error/img_processing_practice/img_process_practice2.py
 src_gray = cv2.cvtColor(src, cv2.COLOR_BGR2GRAY)
+>>>>>>> 18090c16ca7682f6eeb1c6a099700ce191ddb7a3
 
 x, y, width, height = 85, 143, 458, 140
 cropped_gray_image = src_gray[y:y+height, x:x+width]
